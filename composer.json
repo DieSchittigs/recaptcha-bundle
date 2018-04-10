@@ -1,5 +1,5 @@
 {
-    "name": "dieschittigs/recaptcha",
+    "name": "dieschittigs/contao-recaptcha",
     "type": "contao-bundle",
     "authors": [
         {
@@ -7,6 +7,9 @@
             "email": "christopher@dieschittigs.de"
         }
     ],
+    "require": {
+        "php": "^7.0"
+    },
     "autoload": {
         "psr-4": {
             "DieSchittigs\\RecaptchaBundle\\": "src/"
