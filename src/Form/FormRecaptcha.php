@@ -38,7 +38,7 @@ class FormRecaptcha extends FormCaptcha
         if ($this->useFallback()) return parent::validate();
         
         try {
-            $response = $_POST['g-recaptcha-response'] ?? false;
+            $response = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : false;
             if ($response === false) throw new \Exception;
 
             $curl = curl_init('https://www.google.com/recaptcha/api/siteverify');
