@@ -55,8 +55,14 @@ class FormRecaptcha extends FormCaptcha
             $response = curl_exec($curl);
             if ($response === false) throw new \Exception; // Request error
 
-            $parsed = json_decode($response);
-            if (!$parsed->success) throw new \Exception;
+            $parsed = json_decode($response, true);
+            if (!$parsed['success']) {
+                if (in_array('invalid-input-secret', $parsed['error-codes'])) {
+                    \System::log('Google reCAPTCHA private key is invalid.', __METHOD__, TL_CONFIGURATION);
+                }
+
+                throw new \Exception;
+            }
         } catch (\Exception $e) {
             $this->class = 'error';
             $this->addError($GLOBALS['TL_LANG']['ERR']['recaptcha']);
