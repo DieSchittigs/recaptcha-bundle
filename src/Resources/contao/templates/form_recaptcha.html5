@@ -1,0 +1,35 @@
+<?php $this->extend('form_row'); ?>
+
+<?php $this->block('field'); ?>
+    <?php if ($this->hasErrors()): ?>
+        <p class="error"><?= $this->getErrorAsString() ?></p>
+    <?php endif; ?>
+
+    <div class="g-recaptcha" 
+        id="recaptcha-<?= $this->id ?>"
+        data-sitekey="<?= $this->publicKey ?>"
+        data-callback="onSubmit_<?= $this->id ?>"
+        <?php if ($this->recaptchaType == 'invisible'): ?> data-size="invisible" <?php endif; ?>
+    >
+    </div>
+
+    <script type="text/javascript" defer async>
+        <?php if ($this->recaptchaType == 'invisible'): ?>
+            var node = document.getElementById('recaptcha-<?= $this->id ?>');
+            while (node && node.tagName !== 'FORM') node = node.parentNode;
+
+            if (node) {
+                node.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    grecaptcha.execute();
+                });
+            }
+
+            function onSubmit_<?= $this->id ?>() { node.submit(); }
+        <?php else: ?>
+            function onSubmit_<?= $this->id ?> () { }
+        <?php endif; ?>
+    </script>
+
+    <script src="https://www.google.com/recaptcha/api.js" defer async></script>
+<?php $this->endblock(); ?>
