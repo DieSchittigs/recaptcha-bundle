@@ -1,6 +1,7 @@
 {
     "name": "dieschittigs/contao-recaptcha",
     "type": "contao-bundle",
+    "license": "ISC",
     "authors": [
         {
             "name": "Christopher Mühl",
