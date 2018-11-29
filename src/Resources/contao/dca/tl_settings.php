@@ -6,11 +6,12 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['recaptchaType'] = [
     'options_callback'  => function () 
     {
         return [
-            'invisible' => 'Invisible reCAPTCHA', 
-            'recaptcha2' => 'reCAPTCHA v2'
+            'invisible' => 'reCAPTCHA v2: Invisible', 
+            'recaptcha2' => 'reCAPTCHA v2: Checkbox', 
+            'recaptcha3' => 'reCAPTCHA v3',
         ];
     },
-    'eval'              => ['chosen' => true]
+    'eval'              => ['chosen' => true, 'submitOnChange' => true]
 ];
 
 $GLOBALS['TL_DCA']['tl_settings']['fields']['recaptchaPublicKey'] = [
@@ -22,6 +23,13 @@ $GLOBALS['TL_DCA']['tl_settings']['fields']['recaptchaPublicKey'] = [
 $GLOBALS['TL_DCA']['tl_settings']['fields']['recaptchaPrivateKey'] = [
     'label'             => &$GLOBALS['TL_LANG']['tl_settings']['recaptchaPrivateKey'],
     'inputType'         => 'text',
+    'eval'              => ['tl_class' => 'w50']
+];
+
+$GLOBALS['TL_DCA']['tl_settings']['fields']['recaptcha3GlobalThreshold'] = [
+    'label'             => &$GLOBALS['TL_LANG']['tl_settings']['recaptcha3GlobalThreshold'],
+    'inputType'         => 'text',
+    'default'           => '0.5',
     'eval'              => ['tl_class' => 'w50']
 ];
 

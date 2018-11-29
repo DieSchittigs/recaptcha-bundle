@@ -1,5 +1,13 @@
 ## Contao reCAPTCHA Integration
-Contao 4 Bundle that replaces the default Contao captcha with Google's invisible reCAPTCHA or reCAPTCHA 2.0.
+A Contao 4 Bundle that replaces Contao's default captcha with the more robust [Google reCAPTCHA](https://www.google.com/recaptcha/intro/v3.html).
+
+We support the following captchas:
+- reCAPTCHA v2 Checkbox
+- reCAPTCHA v2 Invisible
+- reCAPTCHA v3 (currently work in progress)
+
+### Installation
+Either require `dieschittigs/contao-recaptcha` via composer or install the bundle from your Contao Manager.
 
 #### Fallback
 If either the private or public key is left empty, the captcha falls back to the default Contao captcha. 

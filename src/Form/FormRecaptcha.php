@@ -22,6 +22,7 @@ class FormRecaptcha extends FormCaptcha
         $this->recaptchaType  = Config::get('recaptchaType'); 
         $this->publicKey  = Config::get('recaptchaPublicKey'); 
         $this->privateKey = Config::get('recaptchaPrivateKey');
+        $this->globalThreshold = Config::get('recaptcha3GlobalThreshold');
 
         if ($this->useFallback()) {
             $this->strTemplate = 'form_captcha';
@@ -40,9 +41,9 @@ class FormRecaptcha extends FormCaptcha
         try {
             $response = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : false;
             if ($response === false) throw new \Exception;
-
+    
             $curl = curl_init('https://www.google.com/recaptcha/api/siteverify');
-
+    
             curl_setopt($curl, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -54,14 +55,26 @@ class FormRecaptcha extends FormCaptcha
             
             $response = curl_exec($curl);
             if ($response === false) throw new \Exception; // Request error
-
+    
             $parsed = json_decode($response, true);
             if (!$parsed['success']) {
                 if (in_array('invalid-input-secret', $parsed['error-codes'])) {
                     \System::log('Google reCAPTCHA private key is invalid.', __METHOD__, TL_CONFIGURATION);
                 }
-
+    
                 throw new \Exception;
+            }
+
+            if ($this->recaptchaType === 'recaptcha3') {
+                $score = $parsed['score'];
+
+                // Use this field's threshold, otherwise use the default
+                $threshold = $this->recaptcha3_threshold ? $this->recaptcha3_threshold : $this->globalThreshold;
+                if (!$threshold) $threshold = 0;
+                
+                if ($score < $threshold) {
+                    throw new \Exception;
+                }
             }
         } catch (\Exception $e) {
             $this->class = 'error';
