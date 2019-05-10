@@ -9,6 +9,8 @@ We support the following captchas:
 ### Installation
 Either require `dieschittigs/contao-recaptcha` via composer or install the bundle from your Contao Manager.
 
+Configure your private and public key in the system settings.
+
 #### Fallback
 If either the private or public key is left empty, the captcha falls back to the default Contao captcha. 
 
