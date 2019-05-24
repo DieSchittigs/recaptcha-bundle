@@ -7,7 +7,7 @@ $GLOBALS['TL_DCA']['tl_content']['fields'] += [
         'label' => &$GLOBALS['TL_LANG']['tl_content']['recaptcha_action'],
         'exclude' => true,
         'inputType' => 'text',
-        'eval' => ['tl_class' => 'w50', 'required' => true],
+        'eval' => ['tl_class' => 'w50', 'required' => true, 'rgxp' => 'recaptcha'],
         'sql' => 'VARCHAR(120) NOT NULL',
     ],
 ];
