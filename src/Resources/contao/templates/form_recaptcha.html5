@@ -6,30 +6,43 @@
     <?php endif; ?>
 
     <div class="g-recaptcha" 
-        id="recaptcha-<?= $this->id ?>"
+        id="recaptcha-<?= $this->strCaptchaKey ?>"
         data-sitekey="<?= $this->publicKey ?>"
-        data-callback="onSubmit_<?= $this->id ?>"
+        data-callback="onSubmit_<?= $this->strCaptchaKey ?>"
         <?php if ($this->recaptchaType == 'invisible'): ?> data-size="invisible" <?php endif; ?>
-    >
-    </div>
+    ></div>
 
+    <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallbackField<?= $this->strCaptchaKey ?><?php if ($this->recaptchaType == 'recaptcha3'): ?>&render=<?= $this->publicKey ?><?php endif; ?>" defer async></script>
     <script type="text/javascript" defer async>
-        <?php if ($this->recaptchaType == 'invisible'): ?>
-            var node = document.getElementById('recaptcha-<?= $this->id ?>');
-            while (node && node.tagName !== 'FORM') node = node.parentNode;
+        function onRecaptchaLoadCallbackField<?= $this->strCaptchaKey ?> () {
+            var onSubmit_<?= $this->strCaptchaKey ?> = function () { };
 
-            if (node) {
-                node.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    grecaptcha.execute();
-                });
-            }
+            <?php if ($this->recaptchaType == 'invisible'): ?>
+                var node = document.getElementById('recaptcha-<?= $this->strCaptchaKey ?>');
+                while (node && node.tagName !== 'FORM') node = node.parentNode;
 
-            function onSubmit_<?= $this->id ?>() { node.submit(); }
-        <?php else: ?>
-            function onSubmit_<?= $this->id ?> () { }
-        <?php endif; ?>
+                if (node) {
+                    node.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        grecaptcha.execute();
+                    });
+                }
+
+                onSubmit_<?= $this->strCaptchaKey ?> = function () { node.submit(); }
+            <?php elseif ($this->recaptchaType == 'recaptcha3'): ?>
+                grecaptcha
+                    .execute('<?= $this->publicKey ?>', {action: '<?= $this->recaptchaAction ?>'})
+                    .then(function (token) {
+                        var node = document.getElementById('recaptcha-<?= $this->strCaptchaKey ?>');
+
+                        var input = document.createElement('input');
+                        input.setAttribute('type', 'hidden');
+                        input.setAttribute('name', 'g-recaptcha-response');
+                        input.setAttribute('value', token);
+
+                        node.replaceWith(input);
+                    });
+            <?php endif; ?>
+        }
     </script>
-
-    <script src="https://www.google.com/recaptcha/api.js" defer async></script>
 <?php $this->endblock(); ?>

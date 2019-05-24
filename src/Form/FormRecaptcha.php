@@ -4,6 +4,7 @@ namespace DieSchittigs\RecaptchaBundle\Form;
 
 use Contao\FormCaptcha;
 use Contao\Config;
+use Contao\FormModel;
 
 class FormRecaptcha extends FormCaptcha
 {
@@ -19,10 +20,20 @@ class FormRecaptcha extends FormCaptcha
     {
         parent::__construct($arrAttributes);
 
-        $this->recaptchaType  = Config::get('recaptchaType'); 
-        $this->publicKey  = Config::get('recaptchaPublicKey'); 
+        $this->recaptchaType = Config::get('recaptchaType'); 
+        $this->publicKey = Config::get('recaptchaPublicKey'); 
         $this->privateKey = Config::get('recaptchaPrivateKey');
         $this->globalThreshold = Config::get('recaptcha3GlobalThreshold');
+
+        if ($this->recaptcha3_action) {
+            $this->recaptchaAction = $this->recaptcha3_action;
+        } elseif ($this->recaptchaType == 'recaptcha3') {
+            $form = FormModel::findById($this->pid);
+            $this->recaptchaAction = $form->alias;
+        }
+
+        $this->recaptchaAction = str_replace('-', '_', $this->recaptchaAction);
+        $this->recaptchaAction = preg_replace('/[^a-zA-Z\/_]/', '', $this->recaptchaAction);
 
         if ($this->useFallback()) {
             $this->strTemplate = 'form_captcha';
@@ -71,6 +82,10 @@ class FormRecaptcha extends FormCaptcha
                 // Use this field's threshold, otherwise use the default
                 $threshold = $this->recaptcha3_threshold ? $this->recaptcha3_threshold : $this->globalThreshold;
                 if (!$threshold) $threshold = 0;
+
+                if ($parsed['action'] && $parsed['action'] != $this->recaptchaAction) {
+                    throw new \Exception;
+                }
                 
                 if ($score < $threshold) {
                     throw new \Exception;

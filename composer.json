@@ -1,6 +1,6 @@
 {
     "name": "dieschittigs/contao-recaptcha",
-    "description": "Contao 4 Bundle that replaces the default Contao captcha with Google's invisible reCAPTCHA or reCAPTCHA 2.0",
+    "description": "Contao 4 Bundle that replaces the default Contao captcha with Google's invisible reCAPTCHA, reCAPTCHA 2.0 or reCAPTCHA 3",
     "type": "contao-bundle",
     "license": "ISC",
     "authors": [
@@ -16,7 +16,15 @@
     "autoload": {
         "psr-4": {
             "DieSchittigs\\RecaptchaBundle\\": "src/"
-        }
+        },
+        "classmap": [
+            "src/Resources/contao/"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/",
+            "src/Resources/contao/languages/"
+        ]
     },
     "extra": {
         "contao-manager-plugin": "DieSchittigs\\RecaptchaBundle\\ContaoManager\\Plugin"
