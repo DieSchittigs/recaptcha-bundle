@@ -8,6 +8,6 @@ $GLOBALS['TL_DCA']['tl_content']['fields'] += [
         'exclude' => true,
         'inputType' => 'text',
         'eval' => ['tl_class' => 'w50', 'required' => true, 'rgxp' => 'recaptcha'],
-        'sql' => 'VARCHAR(120) NOT NULL',
+        'sql' => 'VARCHAR(120)',
     ],
 ];
