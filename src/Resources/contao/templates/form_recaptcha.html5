@@ -15,7 +15,7 @@
     <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallbackField<?= $this->strCaptchaKey ?><?php if ($this->recaptchaType == 'recaptcha3'): ?>&render=<?= $this->publicKey ?><?php endif; ?>" defer async></script>
     <script type="text/javascript" defer async>
         function onRecaptchaLoadCallbackField<?= $this->strCaptchaKey ?> () {
-            var onSubmit_<?= $this->strCaptchaKey ?> = function () { };
+            window.onSubmit_<?= $this->strCaptchaKey ?> = function () { };
 
             <?php if ($this->recaptchaType == 'invisible'): ?>
                 var node = document.getElementById('recaptcha-<?= $this->strCaptchaKey ?>');
@@ -28,7 +28,7 @@
                     });
                 }
 
-                onSubmit_<?= $this->strCaptchaKey ?> = function () { node.submit(); }
+                window.onSubmit_<?= $this->strCaptchaKey ?> = function () { node.submit(); }
             <?php elseif ($this->recaptchaType == 'recaptcha3'): ?>
                 grecaptcha
                     .execute('<?= $this->publicKey ?>', {action: '<?= $this->recaptchaAction ?>'})
