@@ -9,6 +9,7 @@
         id="recaptcha-<?= $this->strCaptchaKey ?>"
         data-sitekey="<?= $this->publicKey ?>"
         data-callback="onSubmit_<?= $this->strCaptchaKey ?>"
+        data-hl="<?= $GLOBALS['TL_LANGUAGE'] ?>"
         <?php if ($this->recaptchaType == 'invisible'): ?> data-size="invisible" <?php endif; ?>
     ></div>
 
