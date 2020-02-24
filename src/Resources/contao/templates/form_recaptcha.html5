@@ -5,7 +5,7 @@
         <p class="error"><?= $this->getErrorAsString() ?></p>
     <?php endif; ?>
 
-    <div class="g-recaptcha" 
+    <div class="g-recaptcha"
         id="recaptcha-<?= $this->strCaptchaKey ?>"
         data-sitekey="<?= $this->publicKey ?>"
         data-callback="onSubmit_<?= $this->strCaptchaKey ?>"
@@ -13,7 +13,7 @@
     ></div>
 
     <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallbackField<?= $this->strCaptchaKey ?><?php if ($this->recaptchaType == 'recaptcha3'): ?>&render=<?= $this->publicKey ?><?php endif; ?>" defer async></script>
-    <script type="text/javascript" defer async>
+    <script>
         function onRecaptchaLoadCallbackField<?= $this->strCaptchaKey ?> () {
             window.onSubmit_<?= $this->strCaptchaKey ?> = function () { };
 
