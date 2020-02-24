@@ -1,23 +1,29 @@
 <?php
 
-$palette = $GLOBALS['TL_DCA']['tl_settings']['palettes'];
-$palette = isset($palette['default']) ? $palette['default'] : $palette;
+$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{files_legend', '{recaptcha_legend},recaptchaType;{files_legend', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
 
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('{files_legend', '{recaptcha_legend},recaptchaType,recaptchaPublicKey,recaptchaPrivateKey;{files_legend', $palette);
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['recaptcha3'] = str_replace('{files_legend', '{recaptcha_legend},recaptchaType,recaptcha3GlobalThreshold,recaptchaPublicKey,recaptchaPrivateKey;{files_legend', $palette);
+$GLOBALS['TL_DCA']['tl_settings']['config']['onload_callback'][] = function() {
 
-$GLOBALS['TL_DCA']['tl_settings']['palettes']['__selector__'][] = 'recaptchaType';
+    switch( \Config::get('recaptchaType') ) {
 
+        case 'recaptcha3':
+            $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('recaptchaType','recaptchaType,recaptcha3GlobalThreshold,recaptchaPublicKey,recaptchaPrivateKey', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
+            break;
+        default:
+            $GLOBALS['TL_DCA']['tl_settings']['palettes']['default'] = str_replace('recaptchaType','recaptchaType,recaptchaPublicKey,recaptchaPrivateKey', $GLOBALS['TL_DCA']['tl_settings']['palettes']['default']);
+            break;
+    }
+};
 
 $GLOBALS['TL_DCA']['tl_settings']['fields'] += [
     'recaptchaType' => [
         'label'             => &$GLOBALS['TL_LANG']['tl_settings']['recaptchaType'],
         'inputType'         => 'select',
-        'options_callback'  => function () 
+        'options_callback'  => function ()
         {
             return [
-                'invisible' => 'reCAPTCHA v2: Invisible', 
-                'recaptcha2' => 'reCAPTCHA v2: Checkbox', 
+                'invisible' => 'reCAPTCHA v2: Invisible',
+                'recaptcha2' => 'reCAPTCHA v2: Checkbox',
                 'recaptcha3' => 'reCAPTCHA v3',
             ];
         },
