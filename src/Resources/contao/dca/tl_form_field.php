@@ -7,10 +7,7 @@ $GLOBALS['TL_DCA']['tl_form_field']['config']['onload_callback'][] = function() 
         return;
     }
 
-    dump($GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha']);
-
     $GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha'] = str_replace('{fconfig_legend},', '{fconfig_legend},recaptcha3_threshold,recaptcha3_action,', $GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha']);
-    dump($GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha']);
 };
 
 $GLOBALS['TL_DCA']['tl_form_field']['fields'] += [
