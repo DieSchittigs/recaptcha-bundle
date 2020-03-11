@@ -1,7 +1,17 @@
 <?php
 
+// alter palette for use with reCaptcha V3
+$GLOBALS['TL_DCA']['tl_form_field']['config']['onload_callback'][] = function() {
+
+    if( \Config::get('recaptchaType') != 'recaptcha3' ) {
+        return;
+    }
+
+    $GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha'] = str_replace('{fconfig_legend},', '{fconfig_legend},recaptcha3_threshold,recaptcha3_action,', $GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha']);
+};
+
 $GLOBALS['TL_DCA']['tl_form_field']['fields'] += [
-    'recaptch3_threshold' => [
+    'recaptcha3_threshold' => [
         'label'             => &$GLOBALS['TL_LANG']['tl_form_field']['recaptcha3_threshold'],
         'inputType'         => 'text',
         'sql'               => "varchar(8) NOT NULL default ''",
@@ -14,7 +24,3 @@ $GLOBALS['TL_DCA']['tl_form_field']['fields'] += [
         'eval'              => ['tl_class' => 'w50', 'rgxp' => 'recaptcha']
     ],
 ];
-
-if (Config::get('recaptchaType') != 'recaptcha3') return;
-
-$GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha'] = str_replace(',type,label', ',type,label,recaptcha3_threshold,recaptcha3_action', $GLOBALS['TL_DCA']['tl_form_field']['palettes']['captcha']);

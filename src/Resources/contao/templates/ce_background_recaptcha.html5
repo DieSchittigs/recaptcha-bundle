@@ -1,7 +1,7 @@
 <?php if ($this->recaptchaType != 'recaptcha3') return; ?>
 
 <script src="https://www.google.com/recaptcha/api.js?onload=onRecaptchaLoadCallbackModule<?= $this->id ?>&render=<?= $this->publicKey ?>" defer async></script>
-<script type="text/javascript" defer async>
+<script>
     function onRecaptchaLoadCallbackModule<?= $this->id ?> () {
         grecaptcha.execute('<?= $this->publicKey ?>', {action: '<?= $this->action ?>'})
     }
