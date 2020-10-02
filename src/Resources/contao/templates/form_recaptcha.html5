@@ -40,7 +40,7 @@
                         input.setAttribute('name', 'g-recaptcha-response');
                         input.setAttribute('value', token);
 
-                        node.replaceWith(input);
+                        node.parentNode.replaceChild(input, node);
                     });
             <?php endif; ?>
         }
