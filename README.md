@@ -1,3 +1,6 @@
+# ⛔ Unmaintained ⛔
+This bundle has not been maintained for some time and should no longer be used.
+
 ## Contao reCAPTCHA Integration
 A Contao 4 Bundle that replaces Contao's default captcha with the more robust [Google reCAPTCHA](https://www.google.com/recaptcha/intro/v3.html).
 
